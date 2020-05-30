@@ -42,12 +42,7 @@ class Usuario {
     	$results = $sql-> select("SELECT * FROM tb_usuarios where idusuario =:ID",array(":ID"=>$id));
 
     	if(count($results)>0){
-    		$row = $results[0];
-
-    		$this->setIdusuario($row['idusuario']);
-    		$this->setDeslogin($row['deslogin']);
-    		$this->setDessenha($row['dessenha']);
-    		$this->setDTcadastro(new DateTime($row['dtcadastro']));
+    		$this ->setData($results[0]);
     	}
     }
     public static function getList(){
@@ -77,12 +72,9 @@ class Usuario {
         // $results =  $sql->select1("select * from tb_usuarios where deslogin = 'user' and dessenha = 1234;");
 
         if(count($results)>0){
-            $row = $results[0];
-
-            $this->setIdusuario($row['idusuario']);
-            $this->setDeslogin($row['deslogin']);
-            $this->setDessenha($row['dessenha']);
-            $this->setDTcadastro(new DateTime($row['dtcadastro']));
+             
+             $this ->setData($results[0]);
+            
         } else if(count($results)<1)
            {
             throw new Exception("Error Processing Request", 1);
@@ -94,10 +86,34 @@ class Usuario {
 
 
     }
-    public function insert(){
+    public function setData($data){
+            
+            $this->setIdusuario($data['idusuario']);
+            $this->setDeslogin($data['deslogin']);
+            $this->setDessenha($data['dessenha']);
+            $this->setDTcadastro(new DateTime($data['dtcadastro']));
 
-        
+
     }
+    public function insert(){
+      
+      $sql= new Sql();
+
+      $results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD)",array(
+        ':LOGIN'=>$this->getDeslogin(),
+        ':PASSWORD'=>$this->getDessenha()));
+        
+        if(count($results)>0){
+            $this ->setData($results[0]);
+        }
+    }
+
+      public function __construct($Login ="",$Password=""){
+         
+         $this->setDeslogin($Login);
+         $this->setDessenha($Password);
+
+      }
     public function __toString(){
 
     	return json_encode(array(

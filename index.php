@@ -13,8 +13,14 @@ echo json_encode($usuarios);
 
 //carregarum usuario usando login e a senha
 
-$usuario = new Usuario();
-$usuario->login("user","1234");
-echo $usuario;
+//$usuario = new Usuario();
+//$usuario->login("user","1234");
+//echo $usuario;
+$aluno = new Usuario("aluno1","qwert");
+
+$aluno->insert();
+
+echo $aluno;
+
 ?>
 
