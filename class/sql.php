@@ -31,6 +31,14 @@
         $stmt->execute();
         return $stmt;
       }
+      public function query1($rawQuery){
+          $stmt =$this->conn->prepare($rawQuery);
+
+         //$this ->setParams($stmt,$params);
+
+        $stmt->execute();
+        return $stmt;
+      }
           
       public function select($rawQuery,$params=array()):array{
 
